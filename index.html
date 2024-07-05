@@ -15,13 +15,14 @@
             overflow: hidden;
             background-color: #1e1e1e;
             position: relative;
+            flex-direction: column;
         }
 
         .heart {
             position: absolute;
             color: grey;
             font-size: 40px;
-            animation: float 5s linear infinite;
+            animation: float 10s linear infinite;
         }
 
         @keyframes float {
@@ -33,17 +34,27 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-10vh);
+                transform: translateY(-20vh);
                 opacity: 0;
             }
         }
 
         .box {
-            background-color: grey;
+            background-color: rgba(255, 255, 255, 0.35);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
             z-index: 10;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .box button {
@@ -52,9 +63,11 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .box button:hover {
+            transform: scale(1.1);
             opacity: 0.8;
         }
 
@@ -72,17 +85,92 @@
             display: none;
             font-size: 2em;
             color: white;
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+        }
+
+        .form-box {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            z-index: 10;
+            animation: fadeIn 1s ease-in-out;
+            margin-top: 20px;
+        }
+
+        .form-box input,
+        .form-box textarea {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .form-box button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+        }
+
+        .quote-box {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .quote-message {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .quote-text {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .quote-note {
+            font-size: 1em;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 <div class="box">
-    <p>Do you want to be my partner?</p>
+    <p>Do you want to be my love :3?</p>
     <button class="yes">Yes</button>
     <button class="no">No</button>
 </div>
 
 <div class="message" id="message"></div>
+
+<div class="form-box" id="form-box">
+    <textarea id="quote" rows="4" placeholder="Enter your quote here..."></textarea>
+    <input type="text" id="name" placeholder="Your name...">
+    <button id="submit">Create Quote 4 Them</button>
+</div>
+
+<div class="quote-box" id="quote-box">
+    <p class="quote-message">Your Response:</p>
+    <p class="quote-text" id="quote-display"></p>
+    <p class="quote-text" id="name-display"></p>
+    <p class="quote-note">Please screenshot this and send this to who sent you this website!</p>
+</div>
 
 <script>
     let heartColor = 'grey';
@@ -103,13 +191,18 @@
         }, 5000);
     }
 
-    setInterval(createHeart, 80);
+    setInterval(createHeart, 150);
+
+    function showForm() {
+        document.querySelector('.message').style.display = 'none';
+        document.getElementById('form-box').style.display = 'flex';
+    }
 
     // Event listeners for buttons
     document.querySelector('.yes').addEventListener('click', () => {
         document.body.style.backgroundColor = 'pink';
         heartColor = 'red';
-        heartSymbol = '♥';
+        heartSymbol = '❤️';
         document.querySelectorAll('.heart').forEach(heart => {
             heart.style.color = heartColor;
             heart.textContent = heartSymbol;
@@ -118,6 +211,7 @@
         const message = document.getElementById('message');
         message.textContent = 'YIPPIE';
         message.style.display = 'block';
+        setTimeout(showForm, 2000);
     });
 
     document.querySelector('.no').addEventListener('click', () => {
@@ -132,6 +226,16 @@
         const message = document.getElementById('message');
         message.textContent = 'Aw sad';
         message.style.display = 'block';
+        setTimeout(showForm, 2000);
+    });
+
+    document.getElementById('submit').addEventListener('click', () => {
+        const quote = document.getElementById('quote').value;
+        const name = document.getElementById('name').value;
+        document.getElementById('quote-display').textContent = `"${quote}"`;
+        document.getElementById('name-display').textContent = `- ${name}`;
+        document.getElementById('form-box').style.display = 'none';
+        document.getElementById('quote-box').style.display = 'flex';
     });
 </script>
 </body>
